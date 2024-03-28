@@ -4,6 +4,7 @@ import Mooc.Todo
 
 -- Some imports you'll need. Don't add other imports :)
 import Data.List
+import System.Win32 (xBUTTON1)
 
 ------------------------------------------------------------------------------
 -- Ex 1: compute binomial coefficients using recursion. Binomial
@@ -27,7 +28,10 @@ binomial = todo
 --   oddFactorial 6 ==> 5*3*1 ==> 15
 
 oddFactorial :: Integer -> Integer
-oddFactorial = todo
+oddFactorial 1 = 1
+oddFactorial x 
+    | even x = oddFactorial(x-1)
+    | otherwise = x * oddFactorial(x-2)
 
 ------------------------------------------------------------------------------
 -- Ex 3: implement the Euclidean Algorithm for finding the greatest
@@ -75,7 +79,9 @@ myGcd = todo
 -- * you can compute the length of a string with the length function
 
 leftpad :: String -> Int -> String
-leftpad = todo
+leftpad str len
+    | length str == len = str
+    | otherwise = leftpad (" " ++ str) len
 
 ------------------------------------------------------------------------------
 -- Ex 5: let's make a countdown for a rocket! Given a number, you
@@ -91,7 +97,9 @@ leftpad = todo
 -- * you'll probably need a recursive helper function
 
 countdown :: Integer -> String
-countdown = todo
+countdown x = countdown' x "Ready! "
+    where countdown' 1 str = str ++ "1... Liftoff!"
+          countdown' x str = countdown' (x-1) (str ++ show x ++ "... ")
 
 ------------------------------------------------------------------------------
 -- Ex 6: implement the function smallestDivisor that returns the
