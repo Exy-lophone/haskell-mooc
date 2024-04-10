@@ -39,7 +39,9 @@ import Mooc.Todo
 --   buildList 7 0 3 ==> [3]
 
 buildList :: Int -> Int -> Int -> [Int]
-buildList start count end = todo
+buildList start count end
+    | count == 0 = [end]
+    | otherwise = start : buildList start (count-1) end
 
 ------------------------------------------------------------------------------
 -- Ex 2: given i, build the list of sums [1, 1+2, 1+2+3, .., 1+2+..+i]
@@ -49,7 +51,13 @@ buildList start count end = todo
 -- Ps. you'll probably need a recursive helper function
 
 sums :: Int -> [Int]
-sums i = todo
+sums i = sums' i 1
+
+sums' :: Int -> Int -> [Int]
+sums' 0 x = [] 
+sums' i x = sums2 x : sums' (i-1) (x+1)
+    where sums2 0 = 0
+          sums2 x = x + sums2(x-1) 
 
 ------------------------------------------------------------------------------
 -- Ex 3: define a function mylast that returns the last value of the
@@ -63,7 +71,11 @@ sums i = todo
 --   mylast 0 [1,2,3] ==> 3
 
 mylast :: a -> [a] -> a
-mylast def xs = todo
+mylast def [] = def
+mylast def (x:xs) =
+    case xs of
+        [] -> x
+        _ -> mylast def xs 
 
 ------------------------------------------------------------------------------
 -- Ex 4: safe list indexing. Define a function indexDefault so that
@@ -81,7 +93,12 @@ mylast def xs = todo
 --   indexDefault ["a","b","c"] (-1) "d" ==> "d"
 
 indexDefault :: [a] -> Int -> a -> a
-indexDefault xs i def = todo
+indexDefault [] i def = def
+indexDefault (x:xs) i def
+    | i < 0 = def
+    | i == 0 = x
+    | otherwise = indexDefault xs (i-1) def
+
 
 ------------------------------------------------------------------------------
 -- Ex 5: define a function that checks if the given list is in
@@ -97,7 +114,13 @@ indexDefault xs i def = todo
 --   sorted [7,2,7] ==> False
 
 sorted :: [Int] -> Bool
-sorted xs = todo
+sorted [] = True
+sorted (x:y:xs)
+    | xs == [] && x < y = True
+    | x <= y = sorted (y:xs)
+    | otherwise = False
+sorted (x:xs)
+    | xs == [] = True
 
 ------------------------------------------------------------------------------
 -- Ex 6: compute the partial sums of the given list like this:
@@ -160,7 +183,10 @@ mymaximum bigger initial xs = todo
 -- Use recursion and pattern matching. Do not use any library functions.
 
 map2 :: (a -> b -> c) -> [a] -> [b] -> [c]
-map2 f as bs = todo
+map2 f [] [] = []
+map2 f [] ys = []
+map2 f xs [] = []
+map2 f (x:xs) (y:ys) = f x y : map2 f xs ys
 
 ------------------------------------------------------------------------------
 -- Ex 10: implement the function maybeMap, which works a bit like a
